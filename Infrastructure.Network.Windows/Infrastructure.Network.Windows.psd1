@@ -22,6 +22,10 @@
         'Reset-IcsSharing',
         'Test-IcsDnsReachable',
         'Test-IcsDnsProxyReachable',
+        # netsh portproxy - localhost:port -> remote:port forwarding,
+        # used to make Hyper-V Internal-switch IPs reachable from WSL.
+        'Get-NetshPortProxyRules',
+        'Set-RouterSshPortProxy',
         # Windows Firewall companion for the portproxy.
         'Set-RouterSshPortProxyFirewall',
     )

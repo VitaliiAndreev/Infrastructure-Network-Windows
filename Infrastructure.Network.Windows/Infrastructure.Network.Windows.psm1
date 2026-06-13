@@ -9,6 +9,7 @@
 
     Subdomains:
       - Ics/        - Internet Connection Sharing toggle + DNS probes
+      - Portproxy/  - netsh portproxy parser + idempotent add/replace
       - Firewall/   - Windows Firewall companion for portproxy
 
     Each function lives in its own file under Public\<subdomain>\ and
@@ -22,6 +23,8 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\Public\Ics\Reset-IcsSharing.ps1"
 . "$PSScriptRoot\Public\Ics\Test-IcsDnsReachable.ps1"
 . "$PSScriptRoot\Public\Ics\Test-IcsDnsProxyReachable.ps1"
+. "$PSScriptRoot\Public\Portproxy\Get-NetshPortProxyRules.ps1"
+. "$PSScriptRoot\Public\Portproxy\Set-RouterSshPortProxy.ps1"
 . "$PSScriptRoot\Public\Firewall\Set-RouterSshPortProxyFirewall.ps1"
 
 # Export-ModuleMember controls what is actually callable after Import-Module.
@@ -34,5 +37,7 @@ Export-ModuleMember -Function @(
     'Reset-IcsSharing',
     'Test-IcsDnsReachable',
     'Test-IcsDnsProxyReachable',
+    'Get-NetshPortProxyRules',
+    'Set-RouterSshPortProxy',
     'Set-RouterSshPortProxyFirewall',
 )

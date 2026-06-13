@@ -10,6 +10,7 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
 
 - [Functions](#functions)
   - [ICS](#ics)
+  - [Portproxy](#portproxy)
   - [Firewall](#firewall)
 - [Repository layout](#repository-layout)
 - [Installation](#installation)
@@ -24,6 +25,13 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
 | `Reset-IcsSharing` | Programmatic equivalent of toggling the WiFi adapter's Sharing tab off + on, via `HNetCfg.HNetShare` COM. Use when ICS's DNS proxy enters its known broken state (answers UDP/53 queries with TCP RSTs) where a `Restart-Service SharedAccess` does not recover. |
 | `Test-IcsDnsReachable` | Pure pass-through over `Resolve-DnsName` so probes can be mocked. Returns `$true` if the upstream resolver answered cleanly, `$false` for any error (timeout, RST, NXDOMAIN). |
 | `Test-IcsDnsProxyReachable` | Layered probe + one-shot auto-repair: tests ICS DNS proxy reachability; on FAIL invokes `Reset-IcsSharing` once and re-probes. Returns a finding object `{Status; Label; Detail}` for callers to route into their own preflight surface. |
+
+### Portproxy
+
+| Function | What it does |
+|---|---|
+| `Get-NetshPortProxyRules` | Pure parser over `netsh interface portproxy show v4tov4`. Returns `[PSCustomObject]@{ ListenAddress; ListenPort; ConnectAddress; ConnectPort }` per rule. |
+| `Set-RouterSshPortProxy` | Idempotent `<listen>:<port> -> <connect>:22` portproxy rule. Skips when a matching rule is already present; deletes-and-re-adds when the connect target has drifted; adds fresh when absent. Default listen `0.0.0.0:2222` so WSL2 NAT-mode guests can reach the host loopback. |
 
 ### Firewall
 
@@ -42,6 +50,9 @@ Infrastructure.Network.Windows/
       Reset-IcsSharing.ps1
       Test-IcsDnsReachable.ps1
       Test-IcsDnsProxyReachable.ps1
+    Portproxy/
+      Get-NetshPortProxyRules.ps1
+      Set-RouterSshPortProxy.ps1
     Firewall/
       Set-RouterSshPortProxyFirewall.ps1
 Tests/
