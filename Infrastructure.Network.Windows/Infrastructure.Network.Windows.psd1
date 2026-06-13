@@ -7,7 +7,16 @@
     CompatiblePSEditions = @('Core')
     RootModule        = 'Infrastructure.Network.Windows.psm1'
 
+    # RequiredModules declares load-time dependencies so consumers do
+    # not have to know to Import-Module them by hand. Infrastructure.Wsl
+    # is required because Test-WslRouterReachability calls
+    # Invoke-WslShell - PowerShell auto-imports the listed module when
+    # this one loads.
     RequiredModules = @(
+        @{
+            ModuleName    = 'Infrastructure.Wsl'
+            ModuleVersion = '0.1.0'
+        }
     )
 
     # FunctionsToExport is module discovery metadata: used by
@@ -31,6 +40,10 @@
         # Network profile (Public / Private / Domain) on a host
         # interface. The preflight wraps this for vEthernet adapters.
         'Test-HostNetworkProfileSetting',
+        # Reachability probes that run from WSL through the host
+        # portproxy. Lives here because the concern is network
+        # reachability; WSL is just the execution side.
+        'Test-WslRouterReachability'
     )
     CmdletsToExport   = @()
     AliasesToExport   = @()

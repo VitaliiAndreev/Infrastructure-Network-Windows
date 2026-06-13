@@ -12,6 +12,8 @@
       - Portproxy/  - netsh portproxy parser + idempotent add/replace
       - Firewall/   - Windows Firewall companion for portproxy
       - Profile/    - Network profile (Public/Private/Domain) on a NIC
+      - Probes/     - WSL-side network reachability probes
+                      (depends on Infrastructure.Wsl for Invoke-WslShell)
 
     Each function lives in its own file under Public\<subdomain>\ and
     is dot-sourced below so diffs stay focused on a single function
@@ -28,6 +30,7 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\Public\Portproxy\Set-RouterSshPortProxy.ps1"
 . "$PSScriptRoot\Public\Firewall\Set-RouterSshPortProxyFirewall.ps1"
 . "$PSScriptRoot\Public\Profile\Test-HostNetworkProfileSetting.ps1"
+. "$PSScriptRoot\Public\Probes\Test-WslRouterReachability.ps1"
 
 # Export-ModuleMember controls what is actually callable after Import-Module.
 # It takes precedence over FunctionsToExport in the psd1 at runtime, so both
@@ -43,4 +46,5 @@ Export-ModuleMember -Function @(
     'Set-RouterSshPortProxy',
     'Set-RouterSshPortProxyFirewall',
     'Test-HostNetworkProfileSetting',
+    'Test-WslRouterReachability'
 )

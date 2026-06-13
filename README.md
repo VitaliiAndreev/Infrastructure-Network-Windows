@@ -13,6 +13,7 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
   - [Portproxy](#portproxy)
   - [Firewall](#firewall)
   - [Profile](#profile)
+  - [Probes](#probes)
 - [Repository layout](#repository-layout)
 - [Installation](#installation)
 - [Local tests](#local-tests)
@@ -46,6 +47,12 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
 |---|---|
 | `Test-HostNetworkProfileSetting` | Reads `Get-NetConnectionProfile` for a given `-InterfaceAlias`; reports PASS when category is Private/Domain. On Public, either auto-repairs to Private (default) or reports FAIL when `-NoAutoRepair` is set. Returns a finding object `{Status; Label; Detail}`. |
 
+### Probes
+
+| Function | What it does |
+|---|---|
+| `Test-WslRouterReachability` | Runs ICMP / TCP / SSH-banner probes from inside the named WSL distro and writes a structured transcript to a log path. Returns `{IcmpOk; TcpOk; SshBannerOk; LogPath}`. **Depends on `Infrastructure.Wsl`** for `Invoke-WslShell` (the WSL execution boundary). |
+
 ## Repository layout
 
 ```
@@ -64,7 +71,10 @@ Infrastructure.Network.Windows/
       Set-RouterSshPortProxyFirewall.ps1
     Profile/
       Test-HostNetworkProfileSetting.ps1
+    Probes/
+      Test-WslRouterReachability.ps1
 Tests/
+  Ics/, Portproxy/, Firewall/, Profile/, Probes/   # mirror of Public/
 ```
 
 ## Installation
