@@ -28,6 +28,9 @@
         'Set-RouterSshPortProxy',
         # Windows Firewall companion for the portproxy.
         'Set-RouterSshPortProxyFirewall',
+        # Network profile (Public / Private / Domain) on a host
+        # interface. The preflight wraps this for vEthernet adapters.
+        'Test-HostNetworkProfileSetting',
     )
     CmdletsToExport   = @()
     AliasesToExport   = @()

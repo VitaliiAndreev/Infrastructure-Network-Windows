@@ -12,6 +12,7 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
   - [ICS](#ics)
   - [Portproxy](#portproxy)
   - [Firewall](#firewall)
+  - [Profile](#profile)
 - [Repository layout](#repository-layout)
 - [Installation](#installation)
 - [Local tests](#local-tests)
@@ -39,6 +40,12 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
 |---|---|
 | `Set-RouterSshPortProxyFirewall` | Windows Firewall companion for `Set-RouterSshPortProxy`. Inbound TCP allow rule scoped to the WSL vEthernet adapter ONLY — other host NICs keep their default-deny posture. Idempotent; no-op when WSL is not installed. |
 
+### Profile
+
+| Function | What it does |
+|---|---|
+| `Test-HostNetworkProfileSetting` | Reads `Get-NetConnectionProfile` for a given `-InterfaceAlias`; reports PASS when category is Private/Domain. On Public, either auto-repairs to Private (default) or reports FAIL when `-NoAutoRepair` is set. Returns a finding object `{Status; Label; Detail}`. |
+
 ## Repository layout
 
 ```
@@ -55,6 +62,8 @@ Infrastructure.Network.Windows/
       Set-RouterSshPortProxy.ps1
     Firewall/
       Set-RouterSshPortProxyFirewall.ps1
+    Profile/
+      Test-HostNetworkProfileSetting.ps1
 Tests/
 ```
 
