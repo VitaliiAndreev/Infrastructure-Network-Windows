@@ -89,9 +89,9 @@ by `Install-Module` / auto-imported by `Import-Module`.
 
 ## Local tests
 
-Requires the shared CI scaffolding from `PowerShell-Common`:
+Requires the shared CI scaffolding from `Common-PowerShell`:
 
 ```powershell
-git clone https://github.com/VitaliiAndreev/PowerShell-Common .ci-common
+git clone https://github.com/VitaliiAndreev/Common-PowerShell .ci-common
 .\scripts\Run-Tests.ps1
 ```
