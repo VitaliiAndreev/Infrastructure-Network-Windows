@@ -41,7 +41,7 @@ Everything here is Windows-only — the underlying primitives (`netsh`,
 
 | Function | What it does |
 |---|---|
-| `Set-RouterSshPortProxyFirewall` | Firewall companion for `Set-RouterSshPortProxy`. Ensures an inbound TCP allow in BOTH firewall engines so it works regardless of WSL networking generation: the Windows Defender Firewall scoped to the WSL vEthernet adapter (NAT-mode WSL), and the Hyper-V Firewall scoped to WSL's VM-creator id (Windows 11 Hyper-V-firewall-mode WSL, where the Defender rule has no effect on WSL-to-host traffic). Both scopes leave other host NICs at their default-deny posture. Idempotent; each engine no-ops when its preconditions are absent (no WSL adapter / no Hyper-V firewall feature). |
+| `Set-RouterSshPortProxyFirewall` | Windows Defender Firewall companion for `Set-RouterSshPortProxy`. Inbound TCP allow scoped by source range to the WSL NAT range (`172.16.0.0/12`, override via `-WslNatRange`), so the host's physical LAN and the router's Internal-switch subnet stay default-deny. Range scope (not `-InterfaceAlias`) is deliberate: it has no interface GUID to go stale, so it survives `wsl --shutdown` / host reboots with no re-provision. Refreshed (delete + re-add) each run, which also migrates any older interface-pinned rule. No-op when WSL is not installed. |
 
 ### Profile
 
