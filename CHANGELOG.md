@@ -13,6 +13,34 @@ history and the tag list.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-06-16
+
+### Changed
+- `Set-RouterSshPortProxyFirewall` scopes its inbound 2222 allow by
+  source range (`-RemoteAddress`, default `172.16.0.0/12` - the range
+  WSL2's NAT allocates from) instead of by `-InterfaceAlias`. An
+  interface scope pins the rule to the WSL adapter's interface GUID,
+  which WSL regenerates across `wsl --shutdown` / host reboots,
+  stranding the rule so WSL's SSH to the router drops until a
+  re-provision. Range scoping has no interface GUID to go stale, so the
+  rule survives reboots of long-lived VMs with no re-provision, while
+  still keeping the router's password-auth SSH off the physical LAN and
+  the Internal-switch subnet (neither sits in 172.16/12). The rule is
+  refreshed (delete + re-add) each run, which also migrates an older
+  interface-pinned rule.
+
+### Added
+- `Set-RouterSshPortProxyFirewall -WslNatRange` to narrow the allowed
+  source range on hosts that also live on a 172.16/12 network.
+
+### Removed
+- The 0.5.0 Hyper-V Firewall rule (`New-NetFirewallHyperVRule`).
+  WSL-to-host traffic is outbound from the WSL VM
+  (`DefaultOutboundAction = Allow`), so the Hyper-V Firewall never gated
+  it - the host's Defender rule was always the control. A leftover
+  `VmProvisioner-WSL-RouterSshPortproxy-*` Hyper-V rule from a host that
+  installed 0.5.0 is inert and removable with `Remove-NetFirewallHyperVRule`.
+
 ## [0.5.0] - 2026-06-16
 
 ### Changed
@@ -53,7 +81,8 @@ history and the tag list.
   connection-profile / WSL-router reachability probes
   (`Test-HostNetworkProfileSetting`, `Test-WslRouterReachability`).
 
-[Unreleased]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.3.0...0.4.0
