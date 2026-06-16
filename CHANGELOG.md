@@ -13,6 +13,19 @@ history and the tag list.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-06-16
+
+### Changed
+- `Set-RouterSshPortProxy` now retries the `netsh portproxy add` via
+  Common.PowerShell's `Invoke-WithExitCodeRetry`. The delete-then-add
+  refresh runs unconditionally, so a transient add failure previously
+  risked stranding the listen target with no rule; the bounded retry
+  absorbs the transient case and still throws on a genuine failure.
+
+### Dependencies
+- Added a `RequiredModules` dependency on `Common.PowerShell` (>= 8.1.0),
+  which provides `Invoke-WithExitCodeRetry`.
+
 ## [0.4.0] - 2026-06-16
 
 ### Added
@@ -28,5 +41,6 @@ history and the tag list.
   connection-profile / WSL-router reachability probes
   (`Test-HostNetworkProfileSetting`, `Test-WslRouterReachability`).
 
-[Unreleased]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.4.0...HEAD
+[Unreleased]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.4.1...HEAD
+[0.4.1]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/VitaliiAndreev/Infrastructure-Network-Windows/compare/0.3.0...0.4.0

@@ -1,5 +1,5 @@
 @{
-    ModuleVersion        = '0.4.0'
+    ModuleVersion        = '0.4.1'
     GUID                 = 'd8b3f5c2-1e47-4f9a-b6d3-7e5a9c2f1b08'
     Author               = 'Vitaly Andrev'
     Description          = 'Windows host network utilities for infrastructure repos (ICS, netsh portproxy, firewall, network profile, DNS).'
@@ -11,11 +11,18 @@
     # not have to know to Import-Module them by hand. Infrastructure.Wsl
     # is required because Test-WslRouterReachability calls
     # Invoke-WslShell - PowerShell auto-imports the listed module when
-    # this one loads.
+    # this one loads. Common.PowerShell is required because
+    # Set-RouterSshPortProxy retries the netsh add via
+    # Invoke-WithExitCodeRetry.
     RequiredModules = @(
         @{
             ModuleName    = 'Infrastructure.Wsl'
             ModuleVersion = '0.1.0'
+        }
+        @{
+            ModuleName    = 'Common.PowerShell'
+            ModuleVersion = '8.1.0'
+            GUID          = 'b7d3f2a1-4c9e-4f8d-a2b5-3e6d7f8a9b0c'
         }
     )
 

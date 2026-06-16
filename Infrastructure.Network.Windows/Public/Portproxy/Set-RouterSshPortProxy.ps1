@@ -85,10 +85,21 @@ function Set-RouterSshPortProxy {
             $ListenAddress, $ListenPort, $ConnectAddress, $ConnectPort)
     }
 
-    & netsh interface portproxy add v4tov4 `
-        listenaddress=$ListenAddress listenport=$ListenPort `
-        connectaddress=$ConnectAddress connectport=$ConnectPort | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        throw "netsh interface portproxy add failed with exit $LASTEXITCODE for ${ListenAddress}:${ListenPort} -> ${ConnectAddress}:${ConnectPort}."
-    }
+    # The add is retry-wrapped. netsh portproxy add can fail transiently
+    # when iphlpsvc is momentarily busy, and because the delete above has
+    # already run, a single hard failure would strand the listen target
+    # with NO rule at all - strictly worse than the stale rule we are
+    # refreshing. A short bounded retry absorbs the transient case; a
+    # genuine failure still throws after the final attempt. netsh signals
+    # failure through its exit code (not an exception), so this uses
+    # Common.PowerShell's Invoke-WithExitCodeRetry (the exit-code sibling
+    # of Invoke-WithRetry): its contract is that the script block's final
+    # statement is the native command whose $LASTEXITCODE drives the loop.
+    Invoke-WithExitCodeRetry `
+        -OperationName "netsh portproxy add ${ListenAddress}:${ListenPort} -> ${ConnectAddress}:${ConnectPort}" `
+        -ScriptBlock {
+            & netsh interface portproxy add v4tov4 `
+                listenaddress=$ListenAddress listenport=$ListenPort `
+                connectaddress=$ConnectAddress connectport=$ConnectPort | Out-Null
+        }
 }
