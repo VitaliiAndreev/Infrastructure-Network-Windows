@@ -1,6 +1,9 @@
 BeforeAll {
     function Test-IcsDnsReachable { param([string] $Server) }
     function Reset-IcsSharing     { param([string] $WanInterfaceName, [string] $LanInterfaceName) }
+    # Stubbed so the terminal-FAIL path is tested in isolation from the
+    # diagnostics internals (those have their own dedicated suite).
+    function Get-IcsDnsFailureDiagnostics { param([string] $DnsProbeTarget) }
 
     . "$PSScriptRoot\..\..\Infrastructure.Network.Windows\Public\Ics\Test-IcsDnsProxyReachable.ps1"
 }
@@ -50,6 +53,7 @@ Describe 'Test-IcsDnsProxyReachable' {
         It 'reports FAIL when the re-probe also fails - no retry loop' {
             Mock Test-IcsDnsReachable { $false }
             Mock Reset-IcsSharing { }
+            Mock Get-IcsDnsFailureDiagnostics { 'DIAGNOSTIC-VERDICT' }
 
             $result = Test-IcsDnsProxyReachable `
                 -DnsProbeTarget  '192.168.137.1' `
@@ -58,6 +62,21 @@ Describe 'Test-IcsDnsProxyReachable' {
 
             $result.Status | Should -Be 'FAIL'
             Should -Invoke Reset-IcsSharing -Times 1
+        }
+
+        It 'folds the failure diagnostics into the terminal FAIL detail' {
+            Mock Test-IcsDnsReachable { $false }
+            Mock Reset-IcsSharing { }
+            Mock Get-IcsDnsFailureDiagnostics { 'DIAGNOSTIC-VERDICT' }
+
+            $result = Test-IcsDnsProxyReachable `
+                -DnsProbeTarget  '192.168.137.1' `
+                -LanAdapterName  'vEthernet (Shared)' `
+                -WanAdapterName  'Wi-Fi'
+
+            $result.Detail | Should -Match 'DIAGNOSTIC-VERDICT'
+            Should -Invoke Get-IcsDnsFailureDiagnostics -Times 1 -Exactly `
+                -ParameterFilter { $DnsProbeTarget -eq '192.168.137.1' }
         }
 
         It 'reports FAIL when Reset-IcsSharing itself throws' {

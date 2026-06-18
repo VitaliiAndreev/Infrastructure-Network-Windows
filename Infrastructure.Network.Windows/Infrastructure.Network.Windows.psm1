@@ -23,6 +23,7 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+. "$PSScriptRoot\Public\Ics\Get-IcsDnsFailureDiagnostics.ps1"
 . "$PSScriptRoot\Public\Ics\Reset-IcsSharing.ps1"
 . "$PSScriptRoot\Public\Ics\Test-HostDnsReachable.ps1"
 . "$PSScriptRoot\Public\Ics\Test-IcsDnsProxyReachable.ps1"
@@ -40,6 +41,7 @@ $ErrorActionPreference = 'Stop'
 # discovery without loading the module. The shared Module.Tests.ps1 in the
 # run-unit-tests action enforces that every Public\*.ps1 file appears in both.
 Export-ModuleMember -Function @(
+    'Get-IcsDnsFailureDiagnostics',
     'Get-NetshPortProxyRules',
     'Reset-IcsSharing',
     'Set-RouterSshPortProxy',

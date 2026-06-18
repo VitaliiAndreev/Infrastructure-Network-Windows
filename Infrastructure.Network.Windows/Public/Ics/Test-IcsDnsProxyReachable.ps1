@@ -88,9 +88,14 @@ function Test-IcsDnsProxyReachable {
         }
     }
 
+    # Proxy still dead after the one-shot repair. Rather than hand the
+    # operator a "check X and Y" checklist, probe the two distinguishing
+    # signals (SharedAccess status + host-side upstream DNS) and report
+    # the single fix that applies. See Get-IcsDnsFailureDiagnostics.
+    $diag = Get-IcsDnsFailureDiagnostics -DnsProbeTarget $DnsProbeTarget
     return [PSCustomObject]@{
         Status = 'FAIL'
         Label  = "ICS DNS proxy answers at $DnsProbeTarget"
-        Detail = "Probe failed and stayed failing after Reset-IcsSharing. Genuine ICS bug - check Get-Service SharedAccess + Windows firewall rules for 'Internet Connection Sharing'."
+        Detail = "Probe failed and stayed failing after Reset-IcsSharing. $diag"
     }
 }

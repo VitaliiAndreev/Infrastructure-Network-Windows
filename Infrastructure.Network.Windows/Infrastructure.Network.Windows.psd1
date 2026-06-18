@@ -35,6 +35,7 @@
     FunctionsToExport = @(
         # ICS (Internet Connection Sharing) - host-side toggling +
         # DNS-via-ICS probes.
+        'Get-IcsDnsFailureDiagnostics',
         'Reset-IcsSharing',
         'Test-HostDnsReachable',
         'Test-IcsDnsProxyReachable',
