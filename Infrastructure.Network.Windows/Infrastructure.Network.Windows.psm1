@@ -47,6 +47,7 @@ Export-ModuleMember -Function @(
     'Set-RouterSshPortProxy',
     'Set-RouterSshPortProxyFirewall',
     'Test-HostDnsReachable',
+    'Test-HostNetworkProfileSetting',
     'Test-IcsDnsProxyReachable',
     'Test-IcsDnsReachable',
     'Test-WslRouterReachability'
