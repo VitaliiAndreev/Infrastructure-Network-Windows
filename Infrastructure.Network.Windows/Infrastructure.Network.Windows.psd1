@@ -36,8 +36,9 @@
         # ICS (Internet Connection Sharing) - host-side toggling +
         # DNS-via-ICS probes.
         'Reset-IcsSharing',
-        'Test-IcsDnsReachable',
+        'Test-HostDnsReachable',
         'Test-IcsDnsProxyReachable',
+        'Test-IcsDnsReachable',
         # netsh portproxy - localhost:port -> remote:port forwarding,
         # used to make Hyper-V Internal-switch IPs reachable from WSL.
         'Get-NetshPortProxyRules',
