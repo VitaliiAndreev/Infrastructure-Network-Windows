@@ -1,5 +1,5 @@
 @{
-    ModuleVersion        = '1.0.0'
+    ModuleVersion        = '1.1.0'
     GUID                 = 'd8b3f5c2-1e47-4f9a-b6d3-7e5a9c2f1b08'
     Author               = 'Klark Morrigan'
     Description          = 'Windows host network utilities for infrastructure repos (ICS, netsh portproxy, firewall, network profile, DNS).'
@@ -35,9 +35,11 @@
     FunctionsToExport = @(
         # ICS (Internet Connection Sharing) - host-side toggling +
         # DNS-via-ICS probes.
+        'Get-IcsDnsFailureDiagnostics',
         'Reset-IcsSharing',
-        'Test-IcsDnsReachable',
+        'Test-HostDnsReachable',
         'Test-IcsDnsProxyReachable',
+        'Test-IcsDnsReachable',
         # netsh portproxy - localhost:port -> remote:port forwarding,
         # used to make Hyper-V Internal-switch IPs reachable from WSL.
         'Get-NetshPortProxyRules',

@@ -23,9 +23,11 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+. "$PSScriptRoot\Public\Ics\Get-IcsDnsFailureDiagnostics.ps1"
 . "$PSScriptRoot\Public\Ics\Reset-IcsSharing.ps1"
-. "$PSScriptRoot\Public\Ics\Test-IcsDnsReachable.ps1"
+. "$PSScriptRoot\Public\Ics\Test-HostDnsReachable.ps1"
 . "$PSScriptRoot\Public\Ics\Test-IcsDnsProxyReachable.ps1"
+. "$PSScriptRoot\Public\Ics\Test-IcsDnsReachable.ps1"
 . "$PSScriptRoot\Public\Portproxy\Get-NetshPortProxyRules.ps1"
 . "$PSScriptRoot\Public\Portproxy\Set-RouterSshPortProxy.ps1"
 . "$PSScriptRoot\Public\Firewall\Set-RouterSshPortProxyFirewall.ps1"
@@ -39,12 +41,14 @@ $ErrorActionPreference = 'Stop'
 # discovery without loading the module. The shared Module.Tests.ps1 in the
 # run-unit-tests action enforces that every Public\*.ps1 file appears in both.
 Export-ModuleMember -Function @(
-    'Reset-IcsSharing',
-    'Test-IcsDnsReachable',
-    'Test-IcsDnsProxyReachable',
+    'Get-IcsDnsFailureDiagnostics',
     'Get-NetshPortProxyRules',
+    'Reset-IcsSharing',
     'Set-RouterSshPortProxy',
     'Set-RouterSshPortProxyFirewall',
+    'Test-HostDnsReachable',
     'Test-HostNetworkProfileSetting',
+    'Test-IcsDnsProxyReachable',
+    'Test-IcsDnsReachable',
     'Test-WslRouterReachability'
 )
