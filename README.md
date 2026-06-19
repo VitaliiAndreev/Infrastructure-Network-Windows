@@ -162,7 +162,7 @@ date, bump `ModuleVersion` in
 match, and merge to `master`. The manifest change triggers
 [`release.yml`](.github/workflows/release.yml), which checks the version is
 new, asserts it matches the top CHANGELOG.md section (so notes can never lag
-the release), runs the Pester unit suite and the Docker host/target
-integration workflows (which scan, find no integration tests, and no-op for
+the release), runs the Pester unit suite and the Docker integration job
+gated behind it (which scans, finds no integration tests, and no-ops for
 this module), then tags, publishes to PSGallery, and cuts a GitHub Release
 from CHANGELOG.md via Common-PowerShell's `release-tail.yml`.
