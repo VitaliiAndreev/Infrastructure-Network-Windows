@@ -2,7 +2,14 @@ BeforeAll {
     # Get-Service is Windows-only and Test-HostDnsReachable hits the
     # network; stub both so the verdict logic is tested deterministically
     # on any runner.
-    function Get-Service          { param([string] $Name, $ErrorAction) }
+    function Get-Service {
+        # Suppressed inline (not fleet-wide) so the rule still guards
+        # production code against clobbering a built-in.
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+            'PSAvoidOverwritingBuiltInCmdlets', '',
+            Justification = 'Intentional in-scope test double for Get-Service.')]
+        param([string] $Name, $ErrorAction)
+    }
     function Test-HostDnsReachable { }
 
     . "$PSScriptRoot\..\..\Infrastructure.Network.Windows\Public\Ics\Get-IcsDnsFailureDiagnostics.ps1"
