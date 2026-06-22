@@ -44,7 +44,8 @@
         # used to make Hyper-V Internal-switch IPs reachable from WSL.
         'Get-NetshPortProxyRules',
         'Set-RouterSshPortProxy',
-        # Windows Firewall companion for the portproxy.
+        # Windows Firewall companion for the portproxy (add + remove).
+        'Remove-RouterSshPortProxyFirewall',
         'Set-RouterSshPortProxyFirewall',
         # Network profile (Public / Private / Domain) on a host
         # interface. The preflight wraps this for vEthernet adapters.
