@@ -51,6 +51,7 @@
         'Remove-RouterSshPortProxyFirewall',
         'Set-RouterSshPortProxyFirewall',
         # Relay - portproxy + firewall composed as one inseparable pair.
+        'Remove-RouterSshRelay',
         'Set-RouterSshRelay',
         # Network profile (Public / Private / Domain) on a host
         # interface. The preflight wraps this for vEthernet adapters.

@@ -36,6 +36,7 @@ $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot\Public\Portproxy\Set-RouterSshPortProxy.ps1"
 . "$PSScriptRoot\Public\Firewall\Remove-RouterSshPortProxyFirewall.ps1"
 . "$PSScriptRoot\Public\Firewall\Set-RouterSshPortProxyFirewall.ps1"
+. "$PSScriptRoot\Public\Relay\Remove-RouterSshRelay.ps1"
 . "$PSScriptRoot\Public\Relay\Set-RouterSshRelay.ps1"
 . "$PSScriptRoot\Public\Profile\Test-HostNetworkProfileSetting.ps1"
 . "$PSScriptRoot\Public\Probes\Test-WslRouterReachability.ps1"
@@ -52,6 +53,7 @@ Export-ModuleMember -Function @(
     'Get-WirelessNetAdapter',
     'Remove-RouterSshPortProxy',
     'Remove-RouterSshPortProxyFirewall',
+    'Remove-RouterSshRelay',
     'Reset-IcsSharing',
     'Set-RouterSshPortProxy',
     'Set-RouterSshPortProxyFirewall',
